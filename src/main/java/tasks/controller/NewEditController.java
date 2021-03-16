@@ -187,6 +187,7 @@ public class NewEditController {
             catch (IOException ioe){
                 log.error("error loading field-validator.fxml");
             }
+            log.info(e.getMessage());
         }
 
 

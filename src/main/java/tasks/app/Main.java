@@ -30,7 +30,7 @@ public class Main extends Application {
 
     public static File savedTasksFile = new File(classLoader.getResource("data/tasks.txt").getFile());
 
-    private TasksService service = new TasksService(savedTasksList);//savedTasksList);
+    private TasksService service = new TasksService(savedTasksList);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -43,7 +43,7 @@ public class Main extends Application {
         try {
             log.info("application start");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-            Parent root = loader.load();//loader.load(this.getClass().getResource("/fxml/main.fxml"));
+            Parent root = loader.load();
             Controller ctrl= loader.getController();
             service = new TasksService(savedTasksList);
 

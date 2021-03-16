@@ -44,7 +44,6 @@ public class TasksFileRepository {
         try(DataInputStream dataInputStream = new DataInputStream(in)){
             int listLength = dataInputStream.readInt();
             for (int i = 0; i < listLength; i++){
-                int titleLength = dataInputStream.readInt();
                 String title = dataInputStream.readUTF();
                 boolean isActive = dataInputStream.readBoolean();
                 int interval = dataInputStream.readInt();
@@ -63,12 +62,10 @@ public class TasksFileRepository {
         }
     }
     public static void writeBinary(TaskList tasks, File file)throws IOException{
-//        FileOutputStream fos = null;
+
 
         try (FileOutputStream fos = new FileOutputStream(file)){
-//            fos = new FileOutputStream(file);
             write(tasks,fos);
-            fos.close();
         }
         catch (IOException e){
             log.error("IO exception reading or writing file");
@@ -107,29 +104,7 @@ public class TasksFileRepository {
         reader.close();
 
     }
-    public static void writeText(TaskList tasks, File file) throws IOException {
-        FileWriter fileWriter = new FileWriter(file);
-        try {
-            write(tasks, fileWriter);
-        }
-        catch (IOException e ){
-            log.error("IO exception reading or writing file");
-        }
-        finally {
-            fileWriter.close();
-        }
 
-    }
-    public static void readText(TaskList tasks, File file) throws IOException {
-        FileReader fileReader = new FileReader(file);
-        try {
-            read(tasks, fileReader);
-        }
-        finally {
-            fileReader.close();
-        }
-    }
-    //// service methods for reading
     private static Task getTaskFromString (String line){
         boolean isRepeated = line.contains("from");//if contains - means repeated
         boolean isActive = !line.contains("inactive");//if doesnt have inactive - means active
@@ -151,7 +126,10 @@ public class TasksFileRepository {
     }
     //
     private static int getIntervalFromText(String line){
-        int days, hours, minutes, seconds;
+        int days;
+        int hours;
+        int minutes;
+        int seconds;
         //[1 day 2 hours 46 minutes 40 seconds].
         //[46 minutes 40 seconds].
         //[46 minutes].
@@ -164,13 +142,14 @@ public class TasksFileRepository {
         seconds = trimmed.contains("second") ? 1 : 0;
 
         int[] timeEntities = new int[]{days, hours, minutes, seconds};
-        int i = 0, j = timeEntities.length-1;// positions of timeEntities available
+        int i = 0;
+        int j = timeEntities.length-1;// positions of timeEntities available
         while (i != 1 && j != 1) {
             if (timeEntities[i] == 0) i++;
             if (timeEntities[j] == 0) j--;
         }
 
-        String[] numAndTextValues = trimmed.split(" "); //{"46", "minutes", "40", "seconds"};
+        String[] numAndTextValues = trimmed.split(" ");
         for (int k = 0 ; k < numAndTextValues.length; k+=2){
             timeEntities[i] = Integer.parseInt(numAndTextValues[k]);
             i++;
@@ -197,7 +176,8 @@ public class TasksFileRepository {
     private static Date getDateFromText (String line, boolean isStartTime) {
         Date date = null;
         String trimmedDate; //date trimmed from whole string
-        int start, end;
+        int start;
+        int end;
 
         if (isStartTime){
             start = line.indexOf("[");
@@ -261,7 +241,8 @@ public class TasksFileRepository {
         int seconds = (interval - (secondsInDay*days + secondsInHour*hours + secondsInMin*minutes));
 
         int[] time = new int[]{days, hours, minutes, seconds};
-        int i = 0, j = time.length-1;
+        int i = 0;
+        int j = time.length-1;
         while (time[i] == 0 || time[j] == 0){
             if (time[i] == 0) i++;
             if (time[j] == 0) j--;
