@@ -1,29 +1,29 @@
-package tasks.services;
+package tasks.repository;
 
 
 import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
-import tasks.model.LinkedTaskList;
+import tasks.model.collections.LinkedTaskList;
 import tasks.model.Task;
-import tasks.model.TaskList;
-import tasks.view.*;
+import tasks.model.collections.TaskList;
+import tasks.app.*;
 
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TaskIO {
+public class TasksFileRepository {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss.SSS]");
     private static final String[] TIME_ENTITY = {" day"," hour", " minute"," second"};
     private static final int secondsInDay = 86400;
     private static final int secondsInHour = 3600;
     private static final int secondsInMin = 60;
 
-    private static final Logger log = Logger.getLogger(TaskIO.class.getName());
+
+    private static final Logger log = Logger.getLogger(TasksFileRepository.class.getName());
     public static void write(TaskList tasks, OutputStream out) throws IOException {
-        DataOutputStream dataOutputStream = new DataOutputStream(out);
-        try {
+        try (DataOutputStream dataOutputStream = new DataOutputStream(out)){
             dataOutputStream.writeInt(tasks.size());
             for (Task t : tasks){
                 dataOutputStream.writeInt(t.getTitle().length());
@@ -39,13 +39,9 @@ public class TaskIO {
                 }
             }
         }
-        finally {
-            dataOutputStream.close();
-        }
     }
     public static void read(TaskList tasks, InputStream in)throws IOException {
-        DataInputStream dataInputStream = new DataInputStream(in);
-        try {
+        try(DataInputStream dataInputStream = new DataInputStream(in)){
             int listLength = dataInputStream.readInt();
             for (int i = 0; i < listLength; i++){
                 int titleLength = dataInputStream.readInt();
@@ -65,35 +61,27 @@ public class TaskIO {
                 tasks.add(taskToAdd);
             }
         }
-        finally {
-            dataInputStream.close();
-        }
     }
     public static void writeBinary(TaskList tasks, File file)throws IOException{
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file);
+//        FileOutputStream fos = null;
+
+        try (FileOutputStream fos = new FileOutputStream(file)){
+//            fos = new FileOutputStream(file);
             write(tasks,fos);
+            fos.close();
         }
         catch (IOException e){
             log.error("IO exception reading or writing file");
-        }
-        finally {
-            fos.close();
+            e.printStackTrace();
         }
     }
 
     public static void readBinary(TaskList tasks, File file) throws IOException{
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(file);
+        try (FileInputStream fis  = new FileInputStream(file)) {
             read(tasks, fis);
         }
         catch (IOException e){
             log.error("IO exception reading or writing file");
-        }
-        finally {
-            fis.close();
         }
     }
     public static void write(TaskList tasks, Writer out) throws IOException {
@@ -294,10 +282,11 @@ public class TaskIO {
             taskList.add(t);
         }
         try {
-            TaskIO.writeBinary(taskList, Main.savedTasksFile);
+            TasksFileRepository.writeBinary(taskList, Main.savedTasksFile);
         }
         catch (IOException e){
             log.error("IO exception reading or writing file");
+            e.printStackTrace();
         }
     }
 }

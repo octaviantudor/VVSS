@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>tasks</OriginalElement>
+  <nodes>
+    <node x="315.0" y="957.0">tasks.model.TasksOperations</node>
+    <node x="622.0" y="957.0">tasks.utils.Notificator</node>
+    <node x="38.5" y="247.5">tasks.model.collections.LinkedTaskList</node>
+    <node x="328.0" y="682.0">tasks.services.DateService</node>
+    <node x="364.5" y="236.0">tasks.model.collections.ArrayTaskList</node>
+    <node x="0.0" y="573.0">tasks.model.collections.LinkedTaskList.Node</node>
+    <node x="936.0" y="682.0">tasks.repository.TasksFileRepository</node>
+    <node x="887.0" y="370.0">javafx.application.Application.Parameters</node>
+    <node x="1131.0" y="370.0">tasks.app.Main</node>
+    <node x="942.25" y="0.0">javafx.application.Application</node>
+    <node x="344.0" y="539.0">tasks.model.collections.ArrayTaskList.ArrayTaskListIterator</node>
+    <node x="164.875" y="0.0">tasks.model.collections.TaskList</node>
+    <node x="659.0" y="682.0">tasks.controller.Controller</node>
+    <node x="605.0" y="0.0">tasks.model.Task</node>
+    <node x="900.0" y="957.0">tasks.controller.TaskInfoController</node>
+    <node x="0.0" y="682.0">tasks.controller.NewEditController</node>
+    <node x="0.0" y="957.0">tasks.services.TasksService</node>
+    <node x="100.0" y="539.0">tasks.model.collections.LinkedTaskList.LinkedTaskListIterator</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="javafx.application.Application.Parameters" target="javafx.application.Application">
+      <point x="0.0" y="-60.5" />
+      <point x="999.0" y="345.0" />
+      <point x="1022.5" y="345.0" />
+      <point x="-80.25" y="160.0" />
+    </edge>
+    <edge source="tasks.model.collections.ArrayTaskList" target="tasks.model.collections.TaskList">
+      <point x="0.0" y="-126.5" />
+      <point x="452.0" y="211.0" />
+      <point x="319.375" y="211.0" />
+      <point x="51.5" y="93.0" />
+    </edge>
+    <edge source="tasks.model.collections.LinkedTaskList.LinkedTaskListIterator" target="tasks.model.collections.LinkedTaskList">
+      <point x="0.0" y="-49.0" />
+      <point x="212.0" y="514.0" />
+      <point x="169.75" y="514.0" />
+      <point x="43.75" y="115.0" />
+    </edge>
+    <edge source="tasks.app.Main" target="javafx.application.Application">
+      <point x="0.0" y="-60.5" />
+      <point x="1206.5" y="345.0" />
+      <point x="1183.0" y="345.0" />
+      <point x="80.25" y="160.0" />
+    </edge>
+    <edge source="tasks.model.collections.LinkedTaskList.Node" target="tasks.model.collections.LinkedTaskList">
+      <point x="0.0" y="-15.0" />
+      <point x="40.0" y="514.0" />
+      <point x="82.25" y="514.0" />
+      <point x="-43.75" y="115.0" />
+    </edge>
+    <edge source="tasks.model.collections.LinkedTaskList" target="tasks.model.collections.TaskList">
+      <point x="0.0" y="-115.0" />
+      <point x="126.0" y="211.0" />
+      <point x="216.375" y="211.0" />
+      <point x="-51.5" y="93.0" />
+    </edge>
+    <edge source="tasks.model.collections.ArrayTaskList.ArrayTaskListIterator" target="tasks.model.collections.ArrayTaskList">
+      <point x="0.0" y="-49.0" />
+      <point x="0.0" y="126.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6000000000000001" x="971.8809523809525" y="570.2380952380953" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

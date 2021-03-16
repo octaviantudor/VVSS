@@ -35,6 +35,7 @@ public class DateService {
         calendar.setTime(noTimeDate);
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
+
         return calendar.getTime();
     }
         public String getTimeOfTheDayFromDate(Date date){//to set in detached time field

@@ -15,9 +15,9 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import tasks.model.Task;
 import tasks.services.DateService;
-import tasks.services.TaskIO;
+import tasks.repository.TasksFileRepository;
 import tasks.services.TasksService;
-import tasks.view.Main;
+import tasks.app.Main;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -27,17 +27,17 @@ import java.util.Date;
 
 public class Controller {
     private static final Logger log = Logger.getLogger(Controller.class.getName());
-    public ObservableList<Task> tasksList;
-    TasksService service;
-    DateService dateService;
+    private ObservableList<Task> tasksList;
+    private TasksService service;
+    private DateService dateService;
 
-    public static Stage editNewStage;
-    public static Stage infoStage;
+    static Stage editNewStage;
+    static Stage infoStage;
 
-    public static TableView mainTable;
+    static TableView<Task> mainTable;
 
     @FXML
-    public  TableView tasks;
+    public TableView<Task> tasks;
     @FXML
     private TableColumn<Task, String> columnTitle;
     @FXML
@@ -94,7 +94,7 @@ public class Controller {
             NewEditController editCtrl = loader.getController();
             editCtrl.setService(service);
             editCtrl.setTasksList(tasksList);
-            editCtrl.setCurrentTask((Task)mainTable.getSelectionModel().getSelectedItem());
+            editCtrl.setCurrentTask(mainTable.getSelectionModel().getSelectedItem());
             editNewStage.setScene(new Scene(root, 600, 350));
             editNewStage.setResizable(false);
             editNewStage.initOwner(Main.primaryStage);
@@ -107,9 +107,9 @@ public class Controller {
     }
     @FXML
     public void deleteTask(){
-        Task toDelete = (Task)tasks.getSelectionModel().getSelectedItem();
+        Task toDelete = tasks.getSelectionModel().getSelectedItem();
         tasksList.remove(toDelete);
-        TaskIO.rewriteFile(tasksList);
+        TasksFileRepository.rewriteFile(tasksList);
     }
     @FXML
     public void showDetailedInfo(){

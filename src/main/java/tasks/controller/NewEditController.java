@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import tasks.model.Task;
 import tasks.services.DateService;
-import tasks.services.TaskIO;
+import tasks.repository.TasksFileRepository;
 import tasks.services.TasksService;
 
 import java.io.IOException;
@@ -83,18 +83,13 @@ public class NewEditController {
                 break;
             case "btnEdit" : initEditWindow("Edit Task");
                 break;
+            default:
         }
     }
 
     @FXML
     public void initialize(){
         log.info("new/edit window initializing");
-//        switch (clickedButton.getId()){
-//            case  "btnNew" : initNewWindow("New Task");
-//                break;
-//            case "btnEdit" : initEditWindow("Edit Task");
-//                break;
-//        }
 
     }
     private void initNewWindow(String title){
@@ -106,13 +101,13 @@ public class NewEditController {
     private void initEditWindow(String title){
         currentStage.setTitle(title);
         fieldTitle.setText(currentTask.getTitle());
-        datePickerStart.setValue(dateService.getLocalDateValueFromDate(currentTask.getStartTime()));
+        datePickerStart.setValue(DateService.getLocalDateValueFromDate(currentTask.getStartTime()));
         txtFieldTimeStart.setText(dateService.getTimeOfTheDayFromDate(currentTask.getStartTime()));
 
         if (currentTask.isRepeated()){
             checkBoxRepeated.setSelected(true);
             hideRepeatedTaskModule(false);
-            datePickerEnd.setValue(dateService.getLocalDateValueFromDate(currentTask.getEndTime()));
+            datePickerEnd.setValue(DateService.getLocalDateValueFromDate(currentTask.getEndTime()));
             fieldInterval.setText(service.getIntervalInHours(currentTask));
             txtFieldTimeEnd.setText(dateService.getTimeOfTheDayFromDate(currentTask.getEndTime()));
         }
@@ -146,18 +141,26 @@ public class NewEditController {
         Task collectedFieldsTask = collectFieldsData();
         if (incorrectInputMade) return;
 
-        if (currentTask == null){//no task was chosen -> add button was pressed
+        if (currentTask == null && collectedFieldsTask != null){//no task was chosen -> add button was pressed
+            //verify if the the title of the current task is unique
+            for (Task item : tasksList) {
+                if (item.getTitle().equals(collectedFieldsTask.getTitle())) {
+                    Controller.editNewStage.close();
+                    return;
+                }
+            }
             tasksList.add(collectedFieldsTask);
         }
-        else {
+        else if(collectedFieldsTask != null) {
             for (int i = 0; i < tasksList.size(); i++){
                 if (currentTask.equals(tasksList.get(i))){
+                    collectedFieldsTask.setTitle(tasksList.get(i).getTitle());
                     tasksList.set(i,collectedFieldsTask);
                 }
             }
             currentTask = null;
         }
-        TaskIO.rewriteFile(tasksList);
+        TasksFileRepository.rewriteFile(tasksList);
         Controller.editNewStage.close();
     }
     @FXML
@@ -185,6 +188,8 @@ public class NewEditController {
                 log.error("error loading field-validator.fxml");
             }
         }
+
+
         return result;
     }
 
@@ -192,6 +197,8 @@ public class NewEditController {
     private Task makeTask(){
         Task result;
         String newTitle = fieldTitle.getText();
+        if(newTitle.equals(""))
+            throw new IllegalArgumentException("Task name should not be empty");
         Date startDateWithNoTime = dateService.getDateValueFromLocalDate(datePickerStart.getValue());//ONLY date!!without time
         Date newStartDate = dateService.getDateMergedWithTime(txtFieldTimeStart.getText(), startDateWithNoTime);
         if (checkBoxRepeated.isSelected()){
@@ -206,7 +213,6 @@ public class NewEditController {
         }
         boolean isActive = checkBoxActive.isSelected();
         result.setActive(isActive);
-        System.out.println(result);
         return result;
     }
 
