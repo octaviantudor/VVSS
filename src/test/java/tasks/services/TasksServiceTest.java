@@ -1,8 +1,7 @@
 package tasks.services;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import tasks.model.Task;
 import tasks.model.TaskValidator;
 import tasks.model.collections.ArrayTaskList;
@@ -90,7 +89,9 @@ class TasksServiceTest {
 
     }
 
+    @DisplayName("Test invalid pentru intervalul dat!")
     @Test
+    @Tag("ECP")
     void addTaskECP1() {
         try(OutputStream out = new FileOutputStream(file);
             InputStream in = new FileInputStream(file)){
@@ -105,6 +106,7 @@ class TasksServiceTest {
     }
 
     @Test
+    @Tag("ECP")
     void addTaskECP2() {
         try(OutputStream out = new FileOutputStream(file);
             InputStream in = new FileInputStream(file)){
@@ -120,6 +122,7 @@ class TasksServiceTest {
 
 
     @Test
+    @Tag("ECP")
     void addTaskECP3() {
         try(OutputStream out = new FileOutputStream(file);
             InputStream in = new FileInputStream(file)){
@@ -133,7 +136,9 @@ class TasksServiceTest {
         }
     }
 
+    @Timeout(1000)
     @Test
+    @Tag("BVA")
     void addTaskBVA1() {
         try(OutputStream out = new FileOutputStream(file);
             InputStream in = new FileInputStream(file)){
@@ -147,7 +152,9 @@ class TasksServiceTest {
         }
     }
 
+    //@Disabled
     @Test
+    @Tag("BVA")
     void addTaskBVA2() {
         try(OutputStream out = new FileOutputStream(file);
             InputStream in = new FileInputStream(file)){
@@ -162,7 +169,9 @@ class TasksServiceTest {
     }
 
 
+    @RepeatedTest(5)
     @Test
+    @Tag("BVA")
     void addTaskBVA3() {
         try(OutputStream out = new FileOutputStream(file);
             InputStream in = new FileInputStream(file)){
@@ -177,6 +186,7 @@ class TasksServiceTest {
     }
 
     @Test
+    @Tag("BVA")
     void addTaskBVA4() {
         try(OutputStream out = new FileOutputStream(file);
             InputStream in = new FileInputStream(file)){
@@ -191,6 +201,7 @@ class TasksServiceTest {
     }
 
     @Test
+    @Tag("BVA")
     void addTaskBVA5() {
         try(OutputStream out = new FileOutputStream(file);
             InputStream in = new FileInputStream(file)){
@@ -206,6 +217,7 @@ class TasksServiceTest {
 
 
     @Test
+    @Tag("BVA")
     void addTaskBVA6() {
         try(OutputStream out = new FileOutputStream(file);
             InputStream in = new FileInputStream(file)){
