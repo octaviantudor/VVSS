@@ -3,19 +3,28 @@ package tasks.services;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tasks.model.Task;
+import tasks.model.TaskValidator;
 import tasks.model.TasksOperations;
 import tasks.model.collections.ArrayTaskList;
+import tasks.repository.TasksFileRepository;
 
+import java.io.File;
 import java.util.Date;
 
 public class TasksService {
 
     private ArrayTaskList tasks;
+    private TaskValidator validator;
 
     public TasksService(ArrayTaskList tasks) {
         this.tasks = tasks;
     }
 
+    public TasksService(ArrayTaskList tasks, TaskValidator validator)
+    {
+        this.tasks = tasks;
+        this.validator = validator;
+    }
 
     public ObservableList<Task> getObservableList() {
         return FXCollections.observableArrayList(tasks.getAll());
@@ -37,6 +46,15 @@ public class TasksService {
             sb.append(timeUnit);
         }
         return sb.toString();
+    }
+
+
+    public void addTask(Task task, File file){
+        if(validator.validate(task)){
+            tasks.add(task);
+            TasksFileRepository.rewriteFile(tasks,file);
+        }
+        else throw new IllegalArgumentException("Task invalid");
     }
 
 

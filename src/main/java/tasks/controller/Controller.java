@@ -14,6 +14,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import tasks.model.Task;
+import tasks.model.collections.ArrayTaskList;
+import tasks.model.collections.TaskList;
 import tasks.services.DateService;
 import tasks.repository.TasksFileRepository;
 import tasks.services.TasksService;
@@ -109,7 +111,11 @@ public class Controller {
     public void deleteTask(){
         Task toDelete = tasks.getSelectionModel().getSelectedItem();
         tasksList.remove(toDelete);
-        TasksFileRepository.rewriteFile(tasksList);
+        TaskList taskList = new ArrayTaskList();
+        for(var task: tasksList){
+            taskList.add(task);
+        }
+        TasksFileRepository.rewriteFile(taskList, Main.savedTasksFile);
     }
     @FXML
     public void showDetailedInfo(){

@@ -13,7 +13,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
+import tasks.app.Main;
 import tasks.model.Task;
+import tasks.model.collections.ArrayTaskList;
 import tasks.services.DateService;
 import tasks.repository.TasksFileRepository;
 import tasks.services.TasksService;
@@ -160,9 +162,14 @@ public class NewEditController {
             }
             currentTask = null;
         }
-        TasksFileRepository.rewriteFile(tasksList);
+        ArrayTaskList taskList = new ArrayTaskList();
+        for(var task: tasksList){
+            taskList.add(task);
+        }
+        TasksFileRepository.rewriteFile(taskList, Main.savedTasksFile);
         Controller.editNewStage.close();
     }
+
     @FXML
     public void closeDialogWindow(){
         Controller.editNewStage.close();
