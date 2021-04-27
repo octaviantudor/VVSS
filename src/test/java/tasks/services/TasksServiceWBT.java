@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import tasks.model.Task;
 import tasks.model.collections.ArrayTaskList;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
